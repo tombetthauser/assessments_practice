@@ -86,9 +86,12 @@ class Array
   # `Array#map` methods in your implementation.**
 
   def my_each(&prc)
-
+    (0...self.length).each { |idx| prc.call(self[idx]) }
+    self
   end
 end
+
+# ~2min(super tired)
 
 class Array
   # Define a method `Array#my_select(&prc)` that correctly returns an array of 
@@ -96,9 +99,19 @@ class Array
   # `Array#select` or `Array#reject` in your implementation.**
 
   def my_select(&prc)
-    
+    self.inject([]) { |acc, ele| prc.call(ele) ? acc += [ele] : acc }
   end  
 end
+
+# ~1min(super tired)
+
+
+
+
+
+
+
+
 
 class Array
   # Write an Array method that returns a bubble-sorted copy of an array. 
@@ -106,6 +119,7 @@ class Array
   # your implementation. 
   
   def bubble_sort(&prc)
+    
   end
 
   # You are not required to implement this; it's here as a suggestion :-)
