@@ -19,11 +19,10 @@ end
 
 def exponent(b, n)
   return 1 if n == 0
-  return b if n.abs == 1 
   if n > 0
     b * exponent(b, n-1)
   else
-    b ** n / exponent(b, n+1).to_f
+    1.0 / b * exponent(b, n+1)
   end
 
 end
