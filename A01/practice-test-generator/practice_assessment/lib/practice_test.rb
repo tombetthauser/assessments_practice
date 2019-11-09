@@ -1,37 +1,30 @@
-# Define a method `rec_sum(nums)` that returns the sum of all elements in an 
-# array recursively
+# Write a method that finds the sum of the first n fibonacci numbers recursively. 
+# Assume n > 0.
 
-def rec_sum(nums)
-
-end
-
-# Using recursion and the `is_a?` method, write an `Array#deep_dup` method that 
-# will perform a "deep" duplication of the interior arrays.
-
-def deep_dup(arr)
+def fibs_sum(n)
 
 end
 
-class Array
-  # Define a method `Array#my_zip(*arrays)` that merges elements from the 
-  # receiver with the corresponding elements from each provided argument. You 
-  # CANNOT use Ruby's built-in `Array#zip` method
+# Write a method that returns b^n recursively. Your solution should accept 
+# negative values for n.
 
-  # example => [1,2,3].my_zip([4,5,6], [7,8,9]) 
-  # should return => [[1,4,7], [2,5,8], [3,6,9]]
+def exponent(b, n)
 
-  def my_zip(*arrays)
-
-  end
 end
 
-# Write a function `anagrams(str1, str2)` that takes in two words and returns a 
-# boolean indicating whether or not the words are anagrams. Anagrams are words 
-# that contain the same characters but not necessarily in the same order. Solve 
-# this without using `Array#sort` or `Array#sort_by`.
+# Write a method that doubles each element in an array. Assume all elements of
+# the array are integers.
 
-def anagrams(str1, str2)
+def doubler(array)
   
+end
+
+# A palindrome is a word or sequence of words that reads the same backwards as
+# forwards. Write a method that returns the length of the longest palindrome in
+# a given string. If there is no palindrome longer than two letters, return false.
+
+def longest_palindrome(string)
+
 end
 
 class Array
@@ -45,17 +38,13 @@ class Array
 end
 
 class Array
-  # Write an `Array#my_all?(&prc)` method. This method should return true if
-  # every element in the array satisfies the block, otherwise return false.
-  # **Do NOT use `Array#all?` in your implementation.**
-  
-  # Examples: 
-  # `[1,2,3].my_all? { |n| n.even? }` => false
-  # `[2,4,6].my_all? { |n| n.even? }` => true
+  # Define a method `Array#my_select(&prc)` that correctly returns an array of 
+  # selected elements according to the block. **Do NOT use the built-in 
+  # `Array#select` or `Array#reject` in your implementation.**
 
-  def my_all?(&prc)
-
-  end
+  def my_select(&prc)
+    
+  end  
 end
 
 class Array

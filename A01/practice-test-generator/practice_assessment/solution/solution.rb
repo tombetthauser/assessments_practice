@@ -1,61 +1,62 @@
-# Define a method `rec_sum(nums)` that returns the sum of all elements in an 
-# array recursively
+# Write a method that finds the sum of the first n fibonacci numbers recursively. 
+# Assume n > 0.
 
-def rec_sum(nums)
-  return 0 if nums.empty?
-  
-  nums[0] + rec_sum(nums.drop(1))
+def fibs_sum(n)
+  return 0 if n == 0
+  return 1 if n == 1
+
+  fibs_sum(n-1) + fibs_sum(n-2) + 1
 end
 
-# Using recursion and the `is_a?` method, write an `Array#deep_dup` method that 
-# will perform a "deep" duplication of the interior arrays.
+# Write a method that returns b^n recursively. Your solution should accept 
+# negative values for n.
 
-def deep_dup(arr)
-  arr.map{ |el| el.is_a?(Array) ? deep_dup(el) : el }
+def exponent(b, n)
+  return 1 if n == 0
+  if n > 0
+    b * exponent(b, n - 1)
+  else
+    1.0/b * exponent(b, n + 1)
+  end
 end
 
-class Array
-  # Define a method `Array#my_zip(*arrays)` that merges elements from the 
-  # receiver with the corresponding elements from each provided argument. You 
-  # CANNOT use Ruby's built-in `Array#zip` method
+# Write a method that doubles each element in an array. Assume all elements of
+# the array are integers.
 
-  # example => [1,2,3].my_zip([4,5,6], [7,8,9]) 
-  # should return => [[1,4,7], [2,5,8], [3,6,9]]
+def doubler(array)
+  array.map { |num| num * 2 }
+end
 
-  def my_zip(*arrays)
-    zipped = []
+# A palindrome is a word or sequence of words that reads the same backwards as
+# forwards. Write a method that returns the length of the longest palindrome in
+# a given string. If there is no palindrome longer than two letters, return false.
 
-    self.length.times do |i|
-      subzip = [self[i]]
+def longest_palindrome(string)
+  longest_palindrome = false
+  i = 0
 
-      arrays.each do |array|
-        subzip << array[i]
+  while i < string.length - 1
+    j = i + 1
+
+    while j < string.length
+      curr_string = string[i..j]
+      len = curr_string.length
+
+      if is_palindrome?(curr_string)
+        longest_palindrome = len if !longest_palindrome || len > longest_palindrome
       end
 
-      zipped << subzip
+      j += 1
     end
 
-    zipped
+    i += 1
   end
+
+  longest_palindrome
 end
 
-# Write a function `anagrams(str1, str2)` that takes in two words and returns a 
-# boolean indicating whether or not the words are anagrams. Anagrams are words 
-# that contain the same characters but not necessarily in the same order. Solve 
-# this without using `Array#sort` or `Array#sort_by`.
-
-def anagrams(str1, str2)
-  letters = Hash.new(0)
-
-  str1.split('').each do |char|
-    letters[char] += 1
-  end
-
-  str2.split('').each do |char|
-    letters[char] -= 1
-  end
-
-  letters.all? { |_, v| v.zero? }
+def is_palindrome?(str)
+  str == str.reverse
 end
 
 class Array
@@ -74,17 +75,18 @@ class Array
 end
 
 class Array
-  # Write an `Array#my_all?(&prc)` method. This method should return true if
-  # every element in the array satisfies the block, otherwise return false.
-  # **Do NOT use `Array#all?` in your implementation.**
-  
-  # Examples: 
-  # `[1,2,3].my_all? { |n| n.even? }` => false
-  # `[2,4,6].my_all? { |n| n.even? }` => true
+  # Define a method `Array#my_select(&prc)` that correctly returns an array of 
+  # selected elements according to the block. **Do NOT use the built-in 
+  # `Array#select` or `Array#reject` in your implementation.**
 
-  def my_all?(&prc)
-    self.each { |el| return false unless prc.call(el) }
-    true
+  def my_select(&prc)
+    selects = []
+
+    self.each do |item|
+      selects << item if prc.call(item)
+    end
+
+    selects
   end
 end
 
