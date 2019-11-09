@@ -1,3 +1,5 @@
+require "byebug"
+
 # Write a method that finds the sum of the first n fibonacci numbers recursively. 
 # Assume n > 0.
 
@@ -119,7 +121,21 @@ class Array
   # your implementation. 
   
   def bubble_sort(&prc)
-    
+    prc ||= Proc.new { |x,y| x <=> y }
+
+    shmelf = self.dup
+
+    sorted = false
+    until sorted
+      sorted = true
+      (0...shmelf.length-1).each do |idx|
+        if prc.call(shmelf[idx], shmelf[idx+1]) > 0
+          shmelf[idx], shmelf[idx+1] = shmelf[idx+1], shmelf[idx]
+          sorted = false
+        end
+      end
+    end
+    shmelf
   end
 
   # You are not required to implement this; it's here as a suggestion :-)
