@@ -54,8 +54,31 @@ end
 # a given string. If there is no palindrome longer than two letters, return false.
 
 def longest_palindrome(string)
+  subs = []
+  (0...string.length).each do |idx1|
+    (idx1+1...string.length).each do |idx2|
+      subs << string[idx1..idx2]
+    end
+  end
+  pal_subs = subs.select { |sub| sub == sub.reverse }
+  longest = pal_subs.inject { |acc, sub| sub.length >= acc.length ? sub : acc }
 
+  return false if longest.nil?
+  longest.length > 2 ? longest.length : false
 end
+
+# ~10min (buggy - tired)
+# PRACTICE MORE <~~~~~~~
+
+
+
+
+
+
+
+
+
+
 
 class Array
   # Write an `Array#my_each(&prc)` method that calls a proc on each element.
