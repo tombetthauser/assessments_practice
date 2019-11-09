@@ -19,12 +19,7 @@ end
 
 def exponent(b, n)
   return 1 if n == 0
-  if n > 0
-    b * exponent(b, n-1)
-  else
-    1.0 / b * exponent(b, n+1)
-  end
-
+  n > 0 ? b * exponent(b, n-1) : 1.0 / b * exponent(b, n+1)
 end
 
 # Write a method that doubles each element in an array. Assume all elements of
