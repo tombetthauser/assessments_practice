@@ -22,12 +22,32 @@ def exponent(b, n)
   n > 0 ? b * exponent(b, n-1) : 1.0 / b * exponent(b, n+1)
 end
 
+# 5+ min --- practice more
+
+
+
+
+
+
+
+
+
+
 # Write a method that doubles each element in an array. Assume all elements of
 # the array are integers.
 
 def doubler(array)
-  
+  array.map { |el| el * 2 }
 end
+
+
+
+
+
+
+
+
+
 
 # A palindrome is a word or sequence of words that reads the same backwards as
 # forwards. Write a method that returns the length of the longest palindrome in
