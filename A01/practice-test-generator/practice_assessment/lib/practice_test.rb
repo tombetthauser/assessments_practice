@@ -2,13 +2,29 @@
 # Assume n > 0.
 
 def fibs_sum(n)
-
+  return n if n < 3
+  n + fibs_sum(n-1)
 end
+
+# 4min --- practice more
+
+
+
+
+
+
 
 # Write a method that returns b^n recursively. Your solution should accept 
 # negative values for n.
 
 def exponent(b, n)
+  return 1 if n == 0
+  return b if n.abs == 1 
+  if n > 0
+    b * exponent(b, n-1)
+  else
+    b ** n / exponent(b, n+1).to_f
+  end
 
 end
 
