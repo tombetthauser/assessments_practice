@@ -41,9 +41,14 @@ class Hash
   # **Do NOT use the built-in `Hash#merge` method in your implementation.**
   
   def my_merge(other_hash)
-
+    new_hash = {}
+    self.keys.each { |key| new_hash[key] = self[key] }
+    other_hash.keys.each { |key| new_hash[key] = other_hash[key] }
+    new_hash
   end
 end
+
+#~3min
 
 class String
   # Define a method `String#symmetric_substrings` that returns an array of 
