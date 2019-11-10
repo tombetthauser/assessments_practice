@@ -107,7 +107,12 @@ class Array
   # or `Array#member` methods in your implementation.**
   
   def my_bsearch(target)
-    
+    (0...self.length).each do |idx|
+      return idx if self[idx] == target
+    end
+    nil
   end
 end
+
+# ~1.5min
 
