@@ -2,10 +2,10 @@
 # recursively. Assume n > 0.
 
 def first_even_numbers_sum(n)
-
+  n < 1 ? n : (n*2) + first_even_numbers_sum(n-1)
 end
 
-# ~1.5min
+# ~1.5min, 30sec
 
 # Write a method, `digital_root(num)`. It should Sum the digits of a positive
 # integer. If it is greater than 9 (i.e. more than one digit), sum the digits of
