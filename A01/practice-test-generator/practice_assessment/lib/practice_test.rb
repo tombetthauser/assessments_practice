@@ -1,3 +1,5 @@
+require "byebug"
+
 # Write a recursive method that returns the sum of the first n even numbers
 # recursively. Assume n > 0.
 
@@ -17,8 +19,21 @@ end
 # one step of the process.
 
 def digital_root(num)
-
+  return num if num < 10
+  digital_root(digital_root_step(num))
 end
+
+def digital_root_step(num)
+  sum = 0
+  num_copy = num
+  while num_copy > 9
+    sum += num_copy % 10
+    num_copy = num_copy / 10
+  end
+  sum += num_copy
+end
+
+# ~9min (no solve issue - stupid singleton byebug problem??)
 
 class Hash
   # Write a `Hash#my_merge(other_hash)` method. This should NOT modify the 
