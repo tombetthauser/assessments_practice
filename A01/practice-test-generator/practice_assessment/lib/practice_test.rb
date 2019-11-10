@@ -75,9 +75,12 @@ class Array
   # `Array#map` methods in your implementation.**
 
   def my_each(&prc)
-
+    (0...self.length).each { |idx| prc.call(self[idx]) }; self
   end
 end
+
+# ~2min
+
 
 class Array
   # Write an `Array#my_any?(&prc)` method. This method should return true if any
