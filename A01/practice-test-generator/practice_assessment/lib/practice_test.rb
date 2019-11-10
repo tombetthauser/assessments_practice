@@ -57,9 +57,17 @@ class String
   # example: "cool".symmetric_substrings => ["oo"]
 
   def symmetric_substrings
-
+    subs = []
+    (0...self.length).each do |idx1|
+      (idx1+1...self.length).each do |idx2|
+        subs << self[idx1..idx2]
+      end
+    end
+    subs.select { |sub| sub == sub.reverse }
   end
 end
+
+#~3min
 
 class Array
   # Write an `Array#my_each(&prc)` method that calls a proc on each element.
