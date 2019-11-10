@@ -57,13 +57,12 @@ class String
   # example: "cool".symmetric_substrings => ["oo"]
 
   def symmetric_substrings
-    subs = []
-    (0...self.length).each do |idx1|
-      (idx1+1...self.length).each do |idx2|
-        subs << self[idx1..idx2]
+    (0...self.length).inject([]) do |acc1, idx1|
+      acc1 += (idx1+1...self.length).inject([]) do |acc2, idx2|
+        sub = self[idx1..idx2]
+        sub == sub.reverse ? acc2 += [sub] : acc2
       end
     end
-    subs.select { |sub| sub == sub.reverse }
   end
 end
 
