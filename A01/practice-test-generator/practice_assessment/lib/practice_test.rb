@@ -88,9 +88,14 @@ class Array
   # `[1,3,5].my_any? { |n| n.even? }` => false
 
   def my_any?(&prc)
-
+    self.each do |ele|
+      return true if prc.call(ele)
+    end
+    false
   end
 end
+
+#~1.75min
 
 class Array
   # Write a monkey patch of binary search:
