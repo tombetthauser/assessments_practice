@@ -1,69 +1,75 @@
 gem 'rspec'
 require 'practice_test'
-describe '#fibs_sum' do
-  it 'returns the sum of the first fibonacci number' do
-    expect(fibs_sum(1)).to eq(1)
+# Write a recursive method that returns the sum of the first n even numbers
+# recursively. Assume n > 0.
+describe '#first_even_numbers_sum' do
+  it "returns the sum of the first even number" do
+    expect(first_even_numbers_sum(1)).to eq(2)
   end
 
-  it 'returns the sum of the first 2 fibonacci numbers' do
-    expect(fibs_sum(2)).to eq(2)
-  end
-
-  it 'returns the sum of the first 6 fibonacci numbers' do
-    expect(fibs_sum(6)).to eq(20)
-  end
-
-  it "calls itself recursively" do 
-    expect(self).to receive(:fibs_sum).at_least(:twice).and_call_original
-    fibs_sum(6)
-  end
-end
-
-describe "#exponent" do
-  it "returns the correct answer for positive exponents" do
-    expect(exponent(5,3)).to eq(125)
-  end
-
-  it "returns the correct answer for negative exponents" do
-    expect(exponent(2, -3)).to eq(1/8.0)
-  end
-
-  it "returns the correct answer when n is 0" do
-    expect(exponent(2, 0)).to eq(1)
+  it "returns the sum of the first n even numbers" do
+    expect(first_even_numbers_sum(6)).to eq(42)
   end
 
   it "calls itself recursively" do
-    expect(self).to receive(:exponent).at_least(:twice).and_call_original
-    exponent(2, 3)
+    expect(self).to receive(:first_even_numbers_sum).at_least(:twice).and_call_original
+    first_even_numbers_sum(6)
   end
 end
 
-describe "#doubler" do
-  subject(:array) { [1, 2, 3] }
-
-  it "doubles the elements of the array" do
-    expect(doubler(array)).to eq([2, 4, 6])
+describe "#digital_root" do
+  before(:each) do
+    expect_any_instance_of(Integer).to_not receive(:to_s)
+    expect_any_instance_of(Integer).to_not receive(:digits)
+  end
+  
+  it "calculates the digital root of a single-digit number" do
+    expect(digital_root(9)).to eq(9)
   end
 
-  it "does not modify the original array" do
-    duped_array = array.dup
-    doubler(array)
-    
-    expect(array).to eq(duped_array)
+  it "calculates the digital root of a multi-digit number" do
+    expect(digital_root(125)).to eq(8)
+  end
+  
+  it "calculates the digital root of a larger number" do
+    expect(digital_root(4322)).to eq(2)
   end
 end
 
-describe '#longest_palindrome' do
-  it 'returns false if there is no palindrome longer than two letters' do
-    expect(longest_palindrome("palindrome")).to eq(false)
+describe "Hash#my_merge" do
+  let(:hash1) { {a: 1, b: 2, c: 3} }
+  let(:hash2) { {d: 4, e: 5} }
+  let(:hash3) { {c: 33, d: 4, e: 5} }
+
+  before(:each) do
+    expect(hash1).not_to receive(:merge)
+    expect(hash1).not_to receive(:merge!)
   end
 
-  it 'returns the correct length of the palindrome' do
-    expect(longest_palindrome("181847117432")).to eq(6)
+  it "merges 2 hashes and returns a hash" do
+    expect(hash1.my_merge(hash2)).to eq({ a: 1, b: 2, c: 3, d: 4, e: 5 })
   end
 
-  it 'returns the correct length for the longest palindrome in the string' do
-    expect(longest_palindrome("noonminimum")).to eq(5)
+  it "prioritizes values from the hash being merged in" do
+    expect(hash1.my_merge(hash3)).to eq({ a: 1, b: 2, c: 33, d: 4, e: 5 })
+  end
+end
+
+describe "String#symmetric_substrings" do
+  it "handles a simple example" do
+    expect("aba".symmetric_substrings).to match_array(["aba"])
+  end
+
+  it "handles two substrings" do
+    expect("aba1cdc".symmetric_substrings).to match_array(["aba", "cdc"])
+  end
+
+  it "handles nested substrings" do
+    expect("xabax".symmetric_substrings).to match_array(["aba", "xabax"])
+  end
+
+  it "handles no symmetrical substrings" do
+    expect("abcd".symmetric_substrings).to match_array([])
   end
 end
 
@@ -106,62 +112,57 @@ describe "Array#my_each" do
   end
 end
 
-describe "Array#my_select" do
-  let(:arr) { [1, 2, 3] }
+describe 'Array#my_any' do
+  let(:arr) { [1,2,3] }
 
   before(:each) do
-    expect(arr).not_to receive(:select)
+    expect(arr).not_to receive(:any?)
     expect(arr).not_to receive(:dup)
-    expect(arr).not_to receive(:slice)
-    expect_any_instance_of(Array).not_to receive(:select!)
-    expect_any_instance_of(Array).not_to receive(:reject)
-    expect_any_instance_of(Array).not_to receive(:reject!)
   end
 
-  it "It correctly selects elements according to the passed in block" do
-    expect(arr.my_select { |num| num > 1 }).to eq([2, 3])
+  it "returns true if any number matches the block" do
+    expect(arr.my_any? { |num| num > 2 }).to eq(true)
   end
 
-  it "It returns an empty array if there are no matches" do
-    expect(arr.my_select { |num| num == 4 }).to eq([])
+  it "returns false if no elementes match the block" do
+    expect(arr.my_any? { |num| num == 4 }).to eq(false)
   end
 end
 
-describe "Array#bubble_sort" do
-  let(:array) { [1, 2, 3, 4, 5].shuffle }
+describe 'Array#my_bsearch' do
+  # create a method that performs a binary search in an array for
+  # an element and returns its index
+  let(:arr) { [11, 22, 33, 44, 66] }
+
+  disallowed_methods = [
+    :index, :find_index, :include?, :member?, :dup
+  ]
 
   before(:each) do
-    expect_any_instance_of(Array).not_to receive(:sort)
-    expect_any_instance_of(Array).not_to receive(:sort!)
-    expect_any_instance_of(Array).not_to receive(:sort_by)
-    expect_any_instance_of(Array).not_to receive(:sort_by!)
-  end
-
-  it "works with an empty array" do
-    expect([].bubble_sort).to eq([])
-  end
-
-  it "works with an array of one item" do
-    expect([1].bubble_sort).to eq([1])
-  end
-
-  it "sorts numbers" do
-    expect(array.bubble_sort).to eq([1, 2, 3, 4, 5])
-  end
-
-  it "will use block if given" do
-    sorted = array.bubble_sort do |num1, num2|
-      # order numbers based on descending sort of their squares
-      num2**2 <=> num1**2
+    disallowed_methods.each do |method|
+      expect(arr).not_to receive(method)
     end
-
-    expect(sorted).to eq([5, 4, 3, 2, 1])
+    expect_any_instance_of(Array).not_to receive(:index)
   end
 
-  it "does not modify original" do
-    duped_array = array.dup
-    duped_array.bubble_sort
-    expect(duped_array).to eq(array)
+  it "returns nil if the array is empty" do
+    expect([].my_bsearch(11)).to be_nil
+  end
+
+  it "returns the index of a target" do
+    expect(arr.my_bsearch(33)).to eq(2)
+  end
+
+  it "returns the index of a target that's less than the midpoint" do
+    expect(arr.my_bsearch(22)).to eq(1)
+  end
+
+  it "returns the index of a target that's greater than the midpoint" do
+    expect(arr.my_bsearch(66)).to eq(4)
+  end
+
+  it "returns nil if the target isn't found" do
+    expect(arr.my_bsearch(5)).to be_nil
   end
 end
 

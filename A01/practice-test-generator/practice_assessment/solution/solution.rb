@@ -1,62 +1,92 @@
-# Write a method that finds the sum of the first n fibonacci numbers recursively. 
-# Assume n > 0.
+# Write a recursive method that returns the sum of the first n even numbers
+# recursively. Assume n > 0.
 
-def fibs_sum(n)
-  return 0 if n == 0
-  return 1 if n == 1
-
-  fibs_sum(n-1) + fibs_sum(n-2) + 1
+def first_even_numbers_sum(n)
+  return 2 if n == 1
+  2 * n + first_even_numbers_sum(n-1)
 end
 
-# Write a method that returns b^n recursively. Your solution should accept 
-# negative values for n.
+# Write a method, `digital_root(num)`. It should Sum the digits of a positive
+# integer. If it is greater than 9 (i.e. more than one digit), sum the digits of
+# the resulting number. Keep repeating until there is only one digit in the 
+# result, called the "digital root". **Do NOT use the built in `Integer#to_s`
+# or `Integer#digits` methods in your implementation.**
+#
+# You may wish to use a helper function, `digital_root_step(num)` which performs
+# one step of the process.
 
-def exponent(b, n)
-  return 1 if n == 0
-  if n > 0
-    b * exponent(b, n - 1)
-  else
-    1.0/b * exponent(b, n + 1)
+def digital_root(num)
+  while num >= 10
+    num = digital_root_step(num)
   end
+
+  num
 end
 
-# Write a method that doubles each element in an array. Assume all elements of
-# the array are integers.
+def digital_root_step(num)
+  root = 0
+  while num > 0
+    root += (num % 10)
 
-def doubler(array)
-  array.map { |num| num * 2 }
+    num /= 10
+  end
+
+  root
 end
 
-# A palindrome is a word or sequence of words that reads the same backwards as
-# forwards. Write a method that returns the length of the longest palindrome in
-# a given string. If there is no palindrome longer than two letters, return false.
+# Alternate Solution
+def digital_root(num)
+  digits = []
 
-def longest_palindrome(string)
-  longest_palindrome = false
-  i = 0
+  while num > 0
+    digits << num % 10
+    num /= 10
+  end
 
-  while i < string.length - 1
-    j = i + 1
+  digit_sum = digits.inject(&:+)
 
-    while j < string.length
-      curr_string = string[i..j]
-      len = curr_string.length
+  digit_sum >= 10 ? digital_root(digit_sum) : digit_sum
+end
 
-      if is_palindrome?(curr_string)
-        longest_palindrome = len if !longest_palindrome || len > longest_palindrome
-      end
+# Magical one-line solution
+def digital_root(num)
+  num < 10 ? num : digital_root(digital_root(num / 10) + (num % 10))
+end
 
-      j += 1
+class Hash
+  # Write a `Hash#my_merge(other_hash)` method. This should NOT modify the 
+  # original hash and return a combined version of both hashes.
+  # **Do NOT use the built-in `Hash#merge` method in your implementation.**
+  
+  def my_merge(other_hash)
+    duped_hash = self.dup
+
+    other_hash.each do |k, v|
+      duped_hash[k] = v
     end
 
-    i += 1
+    duped_hash
   end
-
-  longest_palindrome
 end
 
-def is_palindrome?(str)
-  str == str.reverse
+class String
+  # Define a method `String#symmetric_substrings` that returns an array of 
+  # substrings that are palindromes.  Only include substrings of length > 1.
+
+  # example: "cool".symmetric_substrings => ["oo"]
+
+  def symmetric_substrings
+    symm_subs = []
+
+    self.length.times do |start_pos|
+      (2..(self.length - start_pos)).to_a.each do |end_pos|
+        substr = self[start_pos...(start_pos + end_pos)]
+        symm_subs << substr if substr == substr.reverse
+      end
+    end
+
+    symm_subs
+  end
 end
 
 class Array
@@ -75,68 +105,38 @@ class Array
 end
 
 class Array
-  # Define a method `Array#my_select(&prc)` that correctly returns an array of 
-  # selected elements according to the block. **Do NOT use the built-in 
-  # `Array#select` or `Array#reject` in your implementation.**
+  # Write an `Array#my_any?(&prc)` method. This method should return true if any
+  # of the Array elements satisfy the block, otherwise it should return false.
 
-  def my_select(&prc)
-    selects = []
-
-    self.each do |item|
-      selects << item if prc.call(item)
-    end
-
-    selects
+  # Examples: 
+  # `[1,2,3].my_any? { |n| n.even? }` => true
+  # `[1,3,5].my_any? { |n| n.even? }` => false
+  
+  def my_any?(&prc)
+    self.each { |el| return true if prc.call(el) }
+    false
   end
 end
 
 class Array
-  # Write an Array method that returns a bubble-sorted copy of an array. 
-  # Do NOT call the built-in `Array#sort` or `Array#sort_by` methods in 
-  # your implementation. 
-  
-  def bubble_sort!
-    # Without a proc
-    sorted = false
-    until sorted
-      sorted = true
+  # Write a monkey patch of binary search:
+  # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
+  # **Do NOT use the built in `Array#index` `Array#find_index`, `Array#include?`,
+  # or `Array#member` methods in your implementation.**
 
-      self.each_with_index do |el, i|
-        next if i + 1 == self.length
-        j = i + 1
-        if self[i] > self[j]
-          sorted = false
-          self[i], self[j] = self[j], self[i]
-        end
-      end
+  def my_bsearch(target)
+    return nil if size == 0
+    mid = size/2
+
+    case self[mid] <=> target
+    when 0
+      return mid
+    when 1
+      return self.take(mid).my_bsearch(target)
+    else
+      search_res = self.drop(mid+1).my_bsearch(target)
+      search_res.nil? ? nil : mid + 1 + search_res
     end
-
-    self
-  end
-
-  def bubble_sort!(&prc)
-    # With a proc
-    prc ||= Proc.new { |x, y| x <=> y }
-
-    sorted = false
-    until sorted
-      sorted = true
-
-      self.each_with_index do |el, i|
-        next if i + 1 == self.length
-        j = i + 1
-        if prc.call(self[i], self[j]) == 1
-          sorted = false
-          self[i], self[j] = self[j], self[i]
-        end
-      end
-    end
-
-    self
-  end
-
-  def bubble_sort(&prc)
-    self.dup.bubble_sort!(&prc)
   end
 end
 
