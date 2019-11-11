@@ -1,72 +1,68 @@
-# Write a method that finds the sum of the first n fibonacci numbers recursively. 
-# Assume n > 0.
+# Write a method that returns b^n recursively. Your solution should accept 
+# negative values for n.
 
-def fibs_sum(n)
-  return n if n < 3
-  fibs_sum(n - 1) + n
-end
-
-# ~ 2min
-
-# Write a method, `digital_root(num)`. It should Sum the digits of a positive
-# integer. If it is greater than 9 (i.e. more than one digit), sum the digits of
-# the resulting number. Keep repeating until there is only one digit in the 
-# result, called the "digital root". **Do NOT use the built in `Integer#to_s`
-# or `Integer#digits` methods in your implementation.**
-#
-# You may wish to use a helper function, `digital_root_step(num)` which performs
-# one step of the process.
-
-def digital_root(num)
-  return num if num < 10
-  digital_root(num / 10 + digital_root(num % 10))
-end
-
-# ~3min
-
-class Array
-  # Define a method `Array#my_rotate(positions)` that rotates the elements 
-  # correctly based on the argument provided.  The work for positive and 
-  # negative integer arguments.  You CANNOT use Ruby's `Array#rotate` or 
-  # `Array#rotate!`.
-
-  def my_rotate(positions = 1)
-    dup = self.dup
-    case positions <=> 0
-    when 1
-      positions.times { dup.push(dup.shift) }
-    else
-      positions.abs.times { dup.unshift(dup.pop) }
-    end
-    dup
-  end  
-end
-
-# ~7min, 2min, 2min, 2min
-
-# Back in the good old days, you used to be able to write a darn near
-# uncrackable code by simply taking each letter of a message and incrementing it
-# by a fixed number, so "abc" by 2 would look like "cde", wrapping around back
-# to "a" when you pass "z".  Write a function, `caesar_cipher(str, shift)` which
-# will take a message and an increment amount and outputs the encoded message.
-# Assume lowercase and no punctuation. Preserve spaces.
-#
-# To get an array of letters "a" to "z", you may use `("a".."z").to_a`. To find
-# the position of a letter in the array, you may use `Array#find_index`.
-
-def caesar_cipher(str, shift)
-  alpha = ("a".."z").to_a
-  str.each_char.inject("") do |acc, char|
-    if alpha.include?(char) 
-      old_idx = alpha.index(char)
-      acc += alpha[(old_idx + shift) % 26]
-    else
-      acc += char
-    end
+def exponent(b, n)
+  case n <=> 0
+  when 0; 1
+  when 1; b * exponent(b, n-1)
+  else; 1 / b.to_f * exponent(b, n+1)
   end
 end
 
-# ~5min
+#~3min
+
+# Write a recursive method `string_include_key?(string, key)` that takes in a 
+# string to search and a key string.  Return true if the string contains all of 
+# the characters in the key in the same order that they appear in the key.
+
+# example_1: string_include_key?("cadbpc", "abc") => true
+# example_2: string_include_key("cba", "abc") => false
+
+def string_include_key?(string, key)
+  return key == "" if string == ""
+  if string[-1] == key[-1]
+    string_include_key?(string[0...-1], key[0...-1])
+  else
+    string_include_key?(string[0...-1], key)
+  end
+end
+
+# 5min
+
+class Hash
+  # Write a `Hash#my_merge(other_hash)` method. This should NOT modify the 
+  # original hash and return a combined version of both hashes.
+  # **Do NOT use the built-in `Hash#merge` method in your implementation.**
+  
+  def my_merge(other_hash)
+    hash = {}
+    self.keys.each { |k| hash[k] = self[k] }
+    other_hash.keys.each { |k| hash[k] = other_hash[k] }
+    hash
+  end
+end
+
+# 4min
+
+class String
+  # Define a method `String#symmetric_substrings` that returns an array of 
+  # substrings that are palindromes.  Only include substrings of length > 1.
+
+  # example: "cool".symmetric_substrings => ["oo"]
+
+  def symmetric_substrings
+    subs = []
+    (0...self.length).each do |idx1|
+      (idx1+1...self.length).each do |idx2|
+        sub = self[idx1..idx2]
+        subs << sub if sub == sub.reverse
+      end
+    end
+    subs
+  end
+end
+
+# 5min
 
 class Array
   # Write an `Array#my_each(&prc)` method that calls a proc on each element.
@@ -74,54 +70,50 @@ class Array
   # `Array#map` methods in your implementation.**
 
   def my_each(&prc)
-    (0...self.length).each do |idx|
-      prc.call(self[idx])
-    end
-    self
+    (0...self.length).each { |idx| prc.call(self[idx]) }; self
   end
 end
 
-# ~30sec
+#1.5
 
 class Array
-  # Write an `Array#my_each_with_index(&prc)` method that calls a proc on each 
-  # element with its index. **Do NOT use the built-in `Array#each`, `Array#map` 
-  # or `Array#each_with_index` methods in your implementation.**
+  # Write an `Array#my_any?(&prc)` method. This method should return true if any
+  # of the Array elements satisfy the block, otherwise it should return false.
 
-  def my_each_with_index(&prc)
-    (0...self.length).each do |idx|
-      prc.call(self[idx], idx)
-    end
-    self
+  # Examples: 
+  # `[1,2,3].my_any? { |n| n.even? }` => true
+  # `[1,3,5].my_any? { |n| n.even? }` => false
+
+  def my_any?(&prc)
+    (0...self.length).each { |idx| return true if prc.call(self[idx]) }; false
   end
 end
 
-# ~1min
+# 2min
 
 class Array
-  # Write an Array method that returns a bubble-sorted copy of an array. 
-  # Do NOT call the built-in `Array#sort` or `Array#sort_by` methods in 
-  # your implementation. 
+  # Write a monkey patch of binary search:
+  # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
+  # **Do NOT use the built in `Array#index` `Array#find_index`, `Array#include?`,
+  # or `Array#member` methods in your implementation.**
   
-  def bubble_sort(&prc)
-    prc ||= Proc.new { |x,y| x <=> y }
-    arr = self.dup
-    sorted = false
-    until sorted
-      sorted = true
-      (0...arr.length-1).each do |idx|
-        if prc.call(arr[idx], arr[idx+1]) > 0
-          arr[idx], arr[idx+1] = arr[idx+1], arr[idx]
-          sorted = false
-        end
-      end
+  def my_bsearch(target)
+    return nil if self.empty?
+    return 0 if self.first == target
+
+    mid = self.length / 2
+    left = self[0...mid]
+    right = self[mid...self.length]
+    
+    return mid if self[mid] == target
+
+    if target < self[mid]
+      left.my_bsearch(target)
+    else
+      mid + right.my_bsearch(target)
     end
-    arr
   end
-
-  # 5min
-
-  # You are not required to implement this; it's here as a suggestion :-)
-  # def bubble_sort!(&prc)
-  # end
 end
+
+# ~5min
+
