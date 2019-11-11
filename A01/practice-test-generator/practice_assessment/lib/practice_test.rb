@@ -66,7 +66,7 @@ class String
   end
 end
 
-#~3min
+#~3min, ~3.5min(unsing inject)
 
 class Array
   # Write an `Array#my_each(&prc)` method that calls a proc on each element.
@@ -106,12 +106,24 @@ class Array
   # or `Array#member` methods in your implementation.**
   
   def my_bsearch(target)
-    (0...self.length).each do |idx|
-      return idx if self[idx] == target
+    return nil if self.empty?
+
+    return 0 if self.first == target
+
+    mid = self.length / 2
+    left = self[0...mid]
+    right = self[mid...self.length]
+
+    return mid if right.first == 0
+
+    if target < right.first
+      left.my_bsearch(target)
+    else
+      mid + right.my_bsearch(target)
     end
-    nil
+
   end
 end
 
-# ~1.5min
+# ~1.5min, 10+min(had to look it up), 8min, 6.5min, 3min
 

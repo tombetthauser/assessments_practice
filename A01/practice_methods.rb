@@ -1,5 +1,53 @@
 require "byebug"
 
+
+
+
+class Array
+  # Write a monkey patch of binary search:
+  # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
+  # **Do NOT use the built in `Array#index` `Array#find_index`, `Array#include?`,
+  # or `Array#member` methods in your implementation.**
+  
+  def my_bsearch(target)
+    return nil if self.empty?
+
+    return 0 if self.first == target
+
+    mid = self.length / 2
+    left = self[0...mid]
+    right = self[mid...self.length]
+
+    return mid if right.first == 0
+
+    if target < right.first
+      left.my_bsearch(target)
+    else
+      mid + right.my_bsearch(target)
+    end
+
+  end
+end
+
+# ~1.5min, 10+min(had to look it up), 8min, 6.5min, 3min
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Write a method that returns b^n recursively. Your solution should accept 
 # negative values for n.
 
