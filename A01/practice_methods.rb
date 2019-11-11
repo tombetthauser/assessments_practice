@@ -3,6 +3,44 @@ require "byebug"
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+p "we will all burn in the fire of innumerable suns as the universe expands and contract cyclically towards its own inevitable beginning".split(" ").shuffle.join(" ").capitalize + "."
+
+# we burn beginnings cyclically
+# contract the inummerable suns
+#         inevitable universe
+#               own the will
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Array
   # Write a monkey patch of binary search:
   # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
