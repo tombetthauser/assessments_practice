@@ -22,13 +22,10 @@ end
 # The 2nd factorial is 1!, the 3rd factorial is 2!, etc.
 
 def factorials_rec(num)
-  return [1] if num == 0
-  [*factorials_rec(num-1), factorial(num)]
-end
-
-def factorial(num)
-  return 1 if num == 0
-  num * factorial(num-1)
+  return [1] if num == 1
+  facts = factorials_rec(num-1)
+  facts << facts.last * (num-1)
+  facts
 end
 
 class Array
