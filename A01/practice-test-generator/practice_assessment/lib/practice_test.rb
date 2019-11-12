@@ -9,12 +9,10 @@ require "byebug"
 
 def string_include_key?(string, key)
   return true if key.length == 0
-
-  next_key = key[0]
-  old_idx = string.index(next_key)
-  return false if old_idx.nil?
-
-  string_include_key?(string[old_idx+1..-1], key[1..-1])
+  next_k = key[0]
+  old_i = string.index(next_k)
+  return false if old_i.nil?
+  string_include_key?(string[old_i+1..-1], key[1..-1])
 end
 
 # 10+min, 5min, 8min, 3.5min
