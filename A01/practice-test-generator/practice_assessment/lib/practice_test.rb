@@ -1,3 +1,5 @@
+require "byebug"
+
 # Write a recursive method `string_include_key?(string, key)` that takes in a 
 # string to search and a key string.  Return true if the string contains all of 
 # the characters in the key in the same order that they appear in the key.
@@ -6,7 +8,13 @@
 # example_2: string_include_key("cba", "abc") => false
 
 def string_include_key?(string, key)
-  
+  return true if string == key
+  return false if string.length == 0 || key.length == 0
+  if string[0] == key[0]
+    string_include_key?(string[1..-1], key[1..-1])
+  else
+    string_include_key?(string[1..-1], key)
+  end
 end
 
 # Write a recursive method that returns the first "num" factorial numbers in
