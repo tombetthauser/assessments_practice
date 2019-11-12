@@ -12,9 +12,9 @@ def string_include_key?(string, key)
 
   next_key = key[0]
   old_idx = string.index(next_key)
-
   return false if old_idx.nil?
-  string_include_key?(string[old_idx + 1..-1], key[1..-1])
+
+  string_include_key?(string[old_idx+1..-1], key[1..-1])
 end
 
 # 10+min, 5min, 8min, 3.5min
