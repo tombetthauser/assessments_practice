@@ -10,14 +10,14 @@ require "byebug"
 def string_include_key?(string, key)
   return true if key.length == 0
 
-  old_key = key.chars.first
-  idx = string.index(old_key)
-  return false if idx.nil?
+  next_key = key[0]
+  old_idx = string.index(next_key)
 
-  string_include_key?(string[idx+1..-1], key[1..-1])
+  return false if old_idx.nil?
+  string_include_key?(string[old_idx + 1..-1], key[1..-1])
 end
 
-# 10+min, 5min, 
+# 10+min, 5min, 8min, 3.5min
 
 # Write a recursive method that returns the first "num" factorial numbers in
 # ascending order. Note that the 1st factorial number is 0!, which equals 1.  
