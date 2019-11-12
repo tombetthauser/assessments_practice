@@ -1,24 +1,5 @@
 gem 'rspec'
 require 'practice_test'
-describe "#exponent" do
-  it "returns the correct answer for positive exponents" do
-    expect(exponent(5,3)).to eq(125)
-  end
-
-  it "returns the correct answer for negative exponents" do
-    expect(exponent(2, -3)).to eq(1/8.0)
-  end
-
-  it "returns the correct answer when n is 0" do
-    expect(exponent(2, 0)).to eq(1)
-  end
-
-  it "calls itself recursively" do
-    expect(self).to receive(:exponent).at_least(:twice).and_call_original
-    exponent(2, 3)
-  end
-end
-
 describe "#string_include_key" do
   it "returns true for the same string" do
     expect(string_include_key?("adblfci", "abc")).to eq(true)
@@ -41,40 +22,65 @@ describe "#string_include_key" do
   end
 end
 
-describe "Hash#my_merge" do
-  let(:hash1) { {a: 1, b: 2, c: 3} }
-  let(:hash2) { {d: 4, e: 5} }
-  let(:hash3) { {c: 33, d: 4, e: 5} }
-
-  before(:each) do
-    expect(hash1).not_to receive(:merge)
-    expect(hash1).not_to receive(:merge!)
+describe "#factorials_rec" do
+  it "returns first factorial number" do
+    expect(factorials_rec(1)).to eq([1])
   end
 
-  it "merges 2 hashes and returns a hash" do
-    expect(hash1.my_merge(hash2)).to eq({ a: 1, b: 2, c: 3, d: 4, e: 5 })
+  it "returns first two factorial numbers" do
+    expect(factorials_rec(2)).to eq([1, 1])
   end
 
-  it "prioritizes values from the hash being merged in" do
-    expect(hash1.my_merge(hash3)).to eq({ a: 1, b: 2, c: 33, d: 4, e: 5 })
+  it "returns many factorials numbers" do
+    expect(factorials_rec(6)).to eq([1, 1, 2, 6, 24, 120])
+  end
+
+  it "calls itself recursively" do
+    expect(self).to receive(:factorials_rec).at_least(:twice).and_call_original
+    factorials_rec(6)
   end
 end
 
-describe "String#symmetric_substrings" do
-  it "handles a simple example" do
-    expect("aba".symmetric_substrings).to match_array(["aba"])
+describe "Array#my_zip" do
+  let(:arr1) { [ 4, 5, 6 ] }
+  let(:arr2) { [ 7, 8, 9 ] }
+
+  before(:each) do
+    expect_any_instance_of(Array).not_to receive(:zip)
+  end 
+
+  it "Zips arrays of the same size" do
+    expect([1, 2, 3].my_zip(arr1, arr2)).to eq([[1, 4, 7], [2, 5, 8], [3, 6, 9]])
   end
 
-  it "handles two substrings" do
-    expect("aba1cdc".symmetric_substrings).to match_array(["aba", "cdc"])
+  it "Zips arrays of differnet sizes and adds nil appropriately" do
+    expect(arr1.my_zip([1,2], [8])).to eq([[4, 1, 8], [5, 2, nil], [6, nil, nil]])
   end
 
-  it "handles nested substrings" do
-    expect("xabax".symmetric_substrings).to match_array(["aba", "xabax"])
+  let(:arr3) { [10, 11, 12] }
+  let(:arr4) { [13, 14, 15] }
+
+  it "Zips arrays with more elements than the original" do
+    expect([1, 2].my_zip(arr1, arr2, arr3, arr4)).to eq([[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]])
+    expect([].my_zip(arr1, arr2, arr3, arr4)).to eq([])
+  end
+end
+
+describe "#titleize" do
+  it "capitalizes a word" do
+    expect(titleize("jaws")).to eq("Jaws")
   end
 
-  it "handles no symmetrical substrings" do
-    expect("abcd".symmetric_substrings).to match_array([])
+  it "capitalizes every word (aka title case)" do
+    expect(titleize("david copperfield")).to eq("David Copperfield")
+  end
+
+  it "doesn't capitalize 'little words' in a title" do
+    expect(titleize("war and peace")).to eq("War and Peace")
+  end
+
+  it "does capitalize 'little words' at the start of a title" do
+    expect(titleize("the bridge over the river kwai")).to eq("The Bridge over the River Kwai")
   end
 end
 
@@ -117,57 +123,59 @@ describe "Array#my_each" do
   end
 end
 
-describe 'Array#my_any' do
-  let(:arr) { [1,2,3] }
+describe "Array#my_select" do
+  let(:arr) { [1, 2, 3] }
 
   before(:each) do
-    expect(arr).not_to receive(:any?)
+    expect(arr).not_to receive(:select)
     expect(arr).not_to receive(:dup)
+    expect(arr).not_to receive(:slice)
+    expect_any_instance_of(Array).not_to receive(:select!)
+    expect_any_instance_of(Array).not_to receive(:reject)
+    expect_any_instance_of(Array).not_to receive(:reject!)
   end
 
-  it "returns true if any number matches the block" do
-    expect(arr.my_any? { |num| num > 2 }).to eq(true)
+  it "It correctly selects elements according to the passed in block" do
+    expect(arr.my_select { |num| num > 1 }).to eq([2, 3])
   end
 
-  it "returns false if no elementes match the block" do
-    expect(arr.my_any? { |num| num == 4 }).to eq(false)
+  it "It returns an empty array if there are no matches" do
+    expect(arr.my_select { |num| num == 4 }).to eq([])
   end
 end
 
-describe 'Array#my_bsearch' do
-  # create a method that performs a binary search in an array for
-  # an element and returns its index
-  let(:arr) { [11, 22, 33, 44, 66] }
-
-  disallowed_methods = [
-    :index, :find_index, :include?, :member?, :dup
-  ]
+describe "Array#my_quick_sort" do
+  let(:array) { [1, 2, 3, 4, 5, 6, 7].shuffle }
+  let(:sorted) { [1, 2, 3, 4, 5, 6, 7] }
 
   before(:each) do
-    disallowed_methods.each do |method|
-      expect(arr).not_to receive(method)
+    expect_any_instance_of(Array).not_to receive(:sort)
+    expect_any_instance_of(Array).not_to receive(:sort!)
+    expect_any_instance_of(Array).not_to receive(:sort_by)
+    expect_any_instance_of(Array).not_to receive(:sort_by!)
+  end
+
+  it "works with an empty array" do 
+    expect([].my_quick_sort).to eq([])
+  end
+
+  it "works with an array of one number" do 
+    expect([5].my_quick_sort).to eq([5])
+  end
+
+  it "sorts numbers" do
+    expect(array.my_quick_sort).to eq(sorted)
+  end
+
+  it "sorts arrays with duplicates" do
+    expect([17,10,10,9,3,3,2].my_quick_sort).to eq([2,3,3,9,10,10,17])
+  end
+
+  it "will use block if given" do
+    reversed = array.my_quick_sort do |num1, num2|
+      num2 <=> num1
     end
-    expect_any_instance_of(Array).not_to receive(:index)
-  end
-
-  it "returns nil if the array is empty" do
-    expect([].my_bsearch(11)).to be_nil
-  end
-
-  it "returns the index of a target" do
-    expect(arr.my_bsearch(33)).to eq(2)
-  end
-
-  it "returns the index of a target that's less than the midpoint" do
-    expect(arr.my_bsearch(22)).to eq(1)
-  end
-
-  it "returns the index of a target that's greater than the midpoint" do
-    expect(arr.my_bsearch(66)).to eq(4)
-  end
-
-  it "returns nil if the target isn't found" do
-    expect(arr.my_bsearch(5)).to be_nil
+    expect(reversed).to eq([7, 6, 5, 4, 3, 2, 1])
   end
 end
 

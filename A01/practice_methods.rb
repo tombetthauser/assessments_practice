@@ -1,18 +1,18 @@
-require "byebug"
+class Array
+  # Define a method `Array#my_rotate(positions)` that rotates the elements 
+  # correctly based on the argument provided.  The work for positive and 
+  # negative integer arguments.  You CANNOT use Ruby's `Array#rotate` or 
+  # `Array#rotate!`.
 
+  def my_rotate(positions = 1)
+    dup = self.dup
+    positions.times { dup.push(dup.shift) } if positions > 0
+    positions.abs.times { dup.unshift(dup.pop) } if positions < 0
+    dup
+  end  
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
+# ~7min
 
 
 
@@ -23,8 +23,8 @@ p "we will all burn in the fire of innumerable suns as the universe expands and 
 
 # we burn beginnings cyclically
 # contract the inummerable suns
-#         inevitable universe
-#               own the will
+#          inevitable universe
+#                own the will
 
 
 
