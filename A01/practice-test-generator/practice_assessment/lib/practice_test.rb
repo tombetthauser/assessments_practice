@@ -8,14 +8,16 @@ require "byebug"
 # example_2: string_include_key("cba", "abc") => false
 
 def string_include_key?(string, key)
-  return true if string == key
-  return false if string.length == 0 || key.length == 0
-  if string[0] == key[0]
-    string_include_key?(string[1..-1], key[1..-1])
-  else
-    string_include_key?(string[1..-1], key)
-  end
+  return true if key.length == 0
+
+  old_key = key.chars.first
+  idx = string.index(old_key)
+  return false if idx.nil?
+
+  string_include_key?(string[idx+1..-1], key[1..-1])
 end
+
+# 10+min, 5min, 
 
 # Write a recursive method that returns the first "num" factorial numbers in
 # ascending order. Note that the 1st factorial number is 0!, which equals 1.  
