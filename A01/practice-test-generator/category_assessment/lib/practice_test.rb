@@ -277,11 +277,10 @@ class Array
   # or `Array#member` methods in your implementation.**
   
   def my_bsearch(target)
-    return nil if self.empty?
-
     mid_idx = self.length / 2
     left, right = self.take(mid_idx), self.drop(mid_idx)
-    
+
+    return nil if self.empty?
     return 0 if left.first == target
     return mid_idx if right.first == target
 
