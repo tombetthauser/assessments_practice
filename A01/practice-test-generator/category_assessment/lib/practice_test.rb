@@ -259,7 +259,14 @@ class Array
   # `Array#sort` or `Array#sort_by` methods in your implementation.**
 
   def my_quick_sort(&prc)
+    prc ||= Proc.new { |a,b| a <=> b }
+    return self if self.length < 2
 
+    pivot = self.shift
+    left = self.select { |ele| prc.call(ele, pivot) == -1 }
+    right = self.select { |ele| prc.call(ele, pivot) > -1 }
+
+    left.my_quick_sort(&prc) + [pivot] + right.my_quick_sort(&prc)
   end  
 end
 
@@ -270,7 +277,7 @@ class Array
   # or `Array#member` methods in your implementation.**
   
   def my_bsearch(target)
-    
+
   end
 end
 
@@ -280,6 +287,18 @@ class Array
   # your implementation. 
   
   def bubble_sort(&prc)
+    # prc ||= Proc.call { |x,y| x <=> y }
+    # sorted = false
+    # while sorted == false
+    #   sorted = true
+    #   (0...self.length - 1).each do |idx|
+    #     if prc.call(self[i], self[i + 1]) > 0
+    #       self[i], self[i+1] = self[i+1], self[i]
+    #       sorted = false
+    #     end
+    #   end
+    # end
+    # self
   end
 
   # You are not required to implement this; it's here as a suggestion :-)
