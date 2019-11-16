@@ -259,7 +259,7 @@ class Array
   # `Array#sort` or `Array#sort_by` methods in your implementation.**
 
   def my_quick_sort(&prc)
-    prc ||= Proc.new { |x,y| x<=>y }
+    prc ||= Proc.new { |x,y| x <=> y }
 
     return self if self.length < 2
 
@@ -273,6 +273,7 @@ end
 
 # ~12min (very rusty -- looked at solution)
 # ~8min (issues with <=> result -- no solution peek!)
+# ~4min (forgot self[1..-1], no other issues, no solution peek)
 
 class Array
   # Write a monkey patch of binary search:
