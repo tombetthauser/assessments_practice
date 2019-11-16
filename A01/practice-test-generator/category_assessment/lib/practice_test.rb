@@ -259,20 +259,20 @@ class Array
   # `Array#sort` or `Array#sort_by` methods in your implementation.**
 
   def my_quick_sort(&prc)
-    prc ||= Proc.new { |x,y| x <=> y }
+    prc ||= Proc.new { |x,y| x<=>y }
 
     return self if self.length < 2
 
     pivot = self.first
     left = self[1..-1].select { |el| prc.call(el, pivot) == -1 }
-    right = self[1..-1].select { |el| prc.call(el, pivot) != -1 }
+    right = self[1..-1].select { |el| prc.call(el, pivot) >= 0 }
 
     left.my_quick_sort(&prc) + [pivot] + right.my_quick_sort(&prc)
-
   end  
 end
 
 # ~12min (very rusty -- looked at solution)
+# ~8min (issues with <=> result -- no solution peek!)
 
 class Array
   # Write a monkey patch of binary search:
