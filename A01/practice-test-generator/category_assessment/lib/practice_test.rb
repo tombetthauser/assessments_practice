@@ -277,9 +277,23 @@ class Array
   # or `Array#member` methods in your implementation.**
   
   def my_bsearch(target)
+    return nil if self.empty?
 
+    mid_idx = self.length / 2
+    left, right = self.take(mid_idx), self.drop(mid_idx)
+    
+    return 0 if left.first == target
+    return mid_idx if right.first == target
+
+    if right.first > target
+      left.my_bsearch(target)
+    else
+      mid_idx + right.my_bsearch(target)
+    end
   end
 end
+
+# ~7min (rusty)
 
 class Array
   # Write an Array method that returns a bubble-sorted copy of an array. 
