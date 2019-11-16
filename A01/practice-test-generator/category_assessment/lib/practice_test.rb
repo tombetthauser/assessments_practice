@@ -259,14 +259,7 @@ class Array
   # `Array#sort` or `Array#sort_by` methods in your implementation.**
 
   def my_quick_sort(&prc)
-    prc ||= Proc.new { |a,b| a <=> b }
-    return self if self.length < 2
-
-    pivot = self.shift
-    left = self.select { |ele| prc.call(ele, pivot) == -1 }
-    right = self.select { |ele| prc.call(ele, pivot) > -1 }
-
-    left.my_quick_sort(&prc) + [pivot] + right.my_quick_sort(&prc)
+    
   end  
 end
 
@@ -292,7 +285,7 @@ class Array
   end
 end
 
-# ~7min (rusty)
+# ~7min (rusty), ~4.5min (after break with verbal explaination)
 
 class Array
   # Write an Array method that returns a bubble-sorted copy of an array. 
