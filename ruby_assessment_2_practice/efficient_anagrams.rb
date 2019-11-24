@@ -12,6 +12,12 @@
 #
 # This component of the assessment is estimated to take 10 minutes.
 
+def anagrams(str1, str2)
+  hash1, hash2 = Hash.new(0), Hash.new(0)
+  str1.each_char { |ele| hash1[ele] += 1 }
+  str2.each_char { |ele| hash2[ele] += 1 }
+  hash1 == hash2
+end
 
 # Test Cases
 p anagrams("restful", "fluster")    # => true
