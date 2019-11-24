@@ -1,68 +1,59 @@
 gem 'rspec'
 require 'practice_test'
-describe "#string_include_key" do
-  it "returns true for the same string" do
-    expect(string_include_key?("adblfci", "abc")).to eq(true)
+describe "#deep_dup" do
+  subject(:robot_parts) do [
+      ["nuts", "bolts", "washers"],
+      ["capacitors", "resistors", "inductors"]
+    ]
+  end
+  let(:copy) { deep_dup(robot_parts) }
+
+  it "makes a copy of the original array" do
+    expect(copy).to eq(robot_parts)
+    expect(copy).not_to be(robot_parts)
   end
 
-  it "handles keys with duplicate characters: case 1" do
-    expect(string_include_key?("adbblfci", "abbc")).to eq(true)
-  end
+  it "deeply copies arrays" do
+    expect(copy[0]).to eq(robot_parts[0])
+    expect(copy[0]).not_to be(robot_parts[0])
 
-  it "handles keys with duplicate characters: case 2" do
-    expect(string_include_key?("adbclfci", "abbc")).to eq(false)
-  end
-
-  it "returns false if the key characters are in the wrong order" do
-    expect(string_include_key?("dblfcia", "abc")).to eq(false)
-  end
-
-  it "returns false if the string doesn't contain the key" do
-    expect(string_include_key?("db", "abc")).to eq(false)
-  end
-end
-
-describe "#factorials_rec" do
-  it "returns first factorial number" do
-    expect(factorials_rec(1)).to eq([1])
-  end
-
-  it "returns first two factorial numbers" do
-    expect(factorials_rec(2)).to eq([1, 1])
-  end
-
-  it "returns many factorials numbers" do
-    expect(factorials_rec(6)).to eq([1, 1, 2, 6, 24, 120])
-  end
-
-  it "calls itself recursively" do
-    expect(self).to receive(:factorials_rec).at_least(:twice).and_call_original
-    factorials_rec(6)
+    copy[1] << "LEDs"
+    expect(robot_parts[1]).to eq(["capacitors", "resistors", "inductors"])
   end
 end
 
-describe "Array#my_zip" do
-  let(:arr1) { [ 4, 5, 6 ] }
-  let(:arr2) { [ 7, 8, 9 ] }
+describe '#fibs_sum' do
+  it 'returns the sum of the first fibonacci number' do
+    expect(fibs_sum(1)).to eq(1)
+  end
+
+  it 'returns the sum of the first 2 fibonacci numbers' do
+    expect(fibs_sum(2)).to eq(2)
+  end
+
+  it 'returns the sum of the first 6 fibonacci numbers' do
+    expect(fibs_sum(6)).to eq(20)
+  end
+
+  it "calls itself recursively" do 
+    expect(self).to receive(:fibs_sum).at_least(:twice).and_call_original
+    fibs_sum(6)
+  end
+end
+
+describe "Array#my_join" do
+  let(:array) { [ "a", "b", "c", "d" ] }
 
   before(:each) do
-    expect_any_instance_of(Array).not_to receive(:zip)
-  end 
-
-  it "Zips arrays of the same size" do
-    expect([1, 2, 3].my_zip(arr1, arr2)).to eq([[1, 4, 7], [2, 5, 8], [3, 6, 9]])
+    expect_any_instance_of(Array).not_to receive(:join)
   end
 
-  it "Zips arrays of differnet sizes and adds nil appropriately" do
-    expect(arr1.my_zip([1,2], [8])).to eq([[4, 1, 8], [5, 2, nil], [6, nil, nil]])
+  it "joins an array if no argument is passed" do
+    expect(array.my_join).to eq("abcd")
   end
 
-  let(:arr3) { [10, 11, 12] }
-  let(:arr4) { [13, 14, 15] }
-
-  it "Zips arrays with more elements than the original" do
-    expect([1, 2].my_zip(arr1, arr2, arr3, arr4)).to eq([[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]])
-    expect([].my_zip(arr1, arr2, arr3, arr4)).to eq([])
+  it "joins an array if an argument is passed" do
+    expect(array.my_join("$")).to eq("a$b$c$d")
   end
 end
 
@@ -123,59 +114,57 @@ describe "Array#my_each" do
   end
 end
 
-describe "Array#my_select" do
-  let(:arr) { [1, 2, 3] }
+describe 'Array#my_any' do
+  let(:arr) { [1,2,3] }
 
   before(:each) do
-    expect(arr).not_to receive(:select)
+    expect(arr).not_to receive(:any?)
     expect(arr).not_to receive(:dup)
-    expect(arr).not_to receive(:slice)
-    expect_any_instance_of(Array).not_to receive(:select!)
-    expect_any_instance_of(Array).not_to receive(:reject)
-    expect_any_instance_of(Array).not_to receive(:reject!)
   end
 
-  it "It correctly selects elements according to the passed in block" do
-    expect(arr.my_select { |num| num > 1 }).to eq([2, 3])
+  it "returns true if any number matches the block" do
+    expect(arr.my_any? { |num| num > 2 }).to eq(true)
   end
 
-  it "It returns an empty array if there are no matches" do
-    expect(arr.my_select { |num| num == 4 }).to eq([])
+  it "returns false if no elementes match the block" do
+    expect(arr.my_any? { |num| num == 4 }).to eq(false)
   end
 end
 
-describe "Array#my_quick_sort" do
-  let(:array) { [1, 2, 3, 4, 5, 6, 7].shuffle }
-  let(:sorted) { [1, 2, 3, 4, 5, 6, 7] }
+describe 'Array#my_bsearch' do
+  # create a method that performs a binary search in an array for
+  # an element and returns its index
+  let(:arr) { [11, 22, 33, 44, 66] }
+
+  disallowed_methods = [
+    :index, :find_index, :include?, :member?, :dup
+  ]
 
   before(:each) do
-    expect_any_instance_of(Array).not_to receive(:sort)
-    expect_any_instance_of(Array).not_to receive(:sort!)
-    expect_any_instance_of(Array).not_to receive(:sort_by)
-    expect_any_instance_of(Array).not_to receive(:sort_by!)
-  end
-
-  it "works with an empty array" do 
-    expect([].my_quick_sort).to eq([])
-  end
-
-  it "works with an array of one number" do 
-    expect([5].my_quick_sort).to eq([5])
-  end
-
-  it "sorts numbers" do
-    expect(array.my_quick_sort).to eq(sorted)
-  end
-
-  it "sorts arrays with duplicates" do
-    expect([17,10,10,9,3,3,2].my_quick_sort).to eq([2,3,3,9,10,10,17])
-  end
-
-  it "will use block if given" do
-    reversed = array.my_quick_sort do |num1, num2|
-      num2 <=> num1
+    disallowed_methods.each do |method|
+      expect(arr).not_to receive(method)
     end
-    expect(reversed).to eq([7, 6, 5, 4, 3, 2, 1])
+    expect_any_instance_of(Array).not_to receive(:index)
+  end
+
+  it "returns nil if the array is empty" do
+    expect([].my_bsearch(11)).to be_nil
+  end
+
+  it "returns the index of a target" do
+    expect(arr.my_bsearch(33)).to eq(2)
+  end
+
+  it "returns the index of a target that's less than the midpoint" do
+    expect(arr.my_bsearch(22)).to eq(1)
+  end
+
+  it "returns the index of a target that's greater than the midpoint" do
+    expect(arr.my_bsearch(66)).to eq(4)
+  end
+
+  it "returns nil if the target isn't found" do
+    expect(arr.my_bsearch(5)).to be_nil
   end
 end
 

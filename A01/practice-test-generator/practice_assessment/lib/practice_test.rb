@@ -1,42 +1,27 @@
-require "byebug"
+# Using recursion and the `is_a?` method, write an `Array#deep_dup` method that 
+# will perform a "deep" duplication of the interior arrays.
 
-# Write a recursive method `string_include_key?(string, key)` that takes in a 
-# string to search and a key string.  Return true if the string contains all of 
-# the characters in the key in the same order that they appear in the key.
+def deep_dup(arr)
 
-# example_1: string_include_key?("cadbpc", "abc") => true
-# example_2: string_include_key("cba", "abc") => false
-
-def string_include_key?(string, key)
-  return true if key.length == 0
-  next_k = key[0]
-  old_i = string.index(next_k)
-  return false if old_i.nil?
-  string_include_key?(string[old_i+1..-1], key[1..-1])
 end
 
-# 10+min, 5min, 8min, 3.5min
+# Write a method that finds the sum of the first n fibonacci numbers recursively. 
+# Assume n > 0.
 
-# Write a recursive method that returns the first "num" factorial numbers in
-# ascending order. Note that the 1st factorial number is 0!, which equals 1.  
-# The 2nd factorial is 1!, the 3rd factorial is 2!, etc.
+def fibs_sum(n)
 
-def factorials_rec(num)
-  return [1] if num == 1
-  facts = factorials_rec(num-1)
-  facts << facts.last * (num-1)
-  facts
 end
 
 class Array
-  # Define a method `Array#my_zip(*arrays)` that merges elements from the 
-  # receiver with the corresponding elements from each provided argument. You 
-  # CANNOT use Ruby's built-in `Array#zip` method
+  # Write an `Array#my_join` method. If my_join receives no argument, then use
+  # an empty string to join the array together.
+  # **Do NOT use the built-in `Array#join` method in your implementation.**
+  #
+  # Examples.
+  # `[1,2,3].my_join` => '123'
+  # `[1,2,3].my_join('$')` => '1$2$3'
 
-  # example => [1,2,3].my_zip([4,5,6], [7,8,9]) 
-  # should return => [[1,4,7], [2,5,8], [3,6,9]]
-
-  def my_zip(*arrays)
+  def my_join(separator = "")
 
   end
 end
@@ -60,22 +45,26 @@ class Array
 end
 
 class Array
-  # Define a method `Array#my_select(&prc)` that correctly returns an array of 
-  # selected elements according to the block. **Do NOT use the built-in 
-  # `Array#select` or `Array#reject` in your implementation.**
+  # Write an `Array#my_any?(&prc)` method. This method should return true if any
+  # of the Array elements satisfy the block, otherwise it should return false.
 
-  def my_select(&prc)
-    
-  end  
+  # Examples: 
+  # `[1,2,3].my_any? { |n| n.even? }` => true
+  # `[1,3,5].my_any? { |n| n.even? }` => false
+
+  def my_any?(&prc)
+
+  end
 end
 
 class Array
-  # Define a method `Array#quick_sort` that implements the quick sort method. 
-  # The method should be able to accept a block. **Do NOT use the built-in
-  # `Array#sort` or `Array#sort_by` methods in your implementation.**
-
-  def my_quick_sort(&prc)
-
-  end  
+  # Write a monkey patch of binary search:
+  # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
+  # **Do NOT use the built in `Array#index` `Array#find_index`, `Array#include?`,
+  # or `Array#member` methods in your implementation.**
+  
+  def my_bsearch(target)
+    
+  end
 end
 
