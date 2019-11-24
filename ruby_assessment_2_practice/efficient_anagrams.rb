@@ -14,8 +14,8 @@
 
 def anagrams(str1, str2)
   hash1, hash2 = Hash.new(0), Hash.new(0)
-  str1.each_char { |ele| hash1[ele] += 1 }
-  str2.each_char { |ele| hash2[ele] += 1 }
+  str1.each_char { |char| hash1[char] += 1 }
+  str2.each_char { |char| hash2[char] += 1 }
   hash1 == hash2
 end
 
