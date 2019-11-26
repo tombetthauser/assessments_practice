@@ -55,6 +55,15 @@ end
 
 #     Explain the difference between public, private, and protected methods
 
+"Public methods are accessible both inside and outside an instance of a given 
+  class. Private methods are only accessible within an instance of a givin class.
+  Protected methods are accessible both within an instance of a given class, but
+  are also accessible to other instances of the same class."
+
+
+
+
+
 "Public methods can be called anywhere inside or outside a class.
 
 Private methods can only be called within a class and in cildren of that class 
@@ -168,7 +177,70 @@ up on a machine as it's inpute size approaches infinite."
 class Node
 
   def dfs(&prc)
-    return self if prc.call == self
+    raise "must have proc" if prc.nil?
+    return self if prc.call(self)
+
+    self.children.each do |child|
+      result = child.bfs(&prc)
+      return result unless result.nil?
+    end
+
+    nil
   end
 
+
 end
+
+
+
+
+
+
+
+# anagrams
+
+def anagrams?(str1, str2)
+
+  hash1 = Hash.new(0)
+  hash2 = Hash.new(0)
+
+  str1.each_char { |char| hash1[char] += 1 }
+  str2.each_char { |char| hash2[char] += 1 }
+
+  hash1 == hash2
+
+end
+
+# p anagrams?("cat", "tac") # => true
+# p anagrams?("cat", "tcafc") # => false
+
+# ~2min
+
+
+
+# two_sum
+
+def okay_two_sum?(arr, target)
+
+  ele_hash = {}
+
+  arr.each do |ele|
+    compliment = target - ele
+    return true if ele_hash[compliment]
+    ele_hash[ele] = true
+  end
+
+  false
+
+end
+
+# ~6min, ~3min, 1.5min
+
+
+
+arr = [7,10,10,1,1,1,5,1,0]
+p okay_two_sum?(arr, 17) # => should be true
+p okay_two_sum?(arr, 1000) # => false
+
+
+
