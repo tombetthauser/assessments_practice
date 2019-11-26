@@ -40,7 +40,7 @@ class Parent
   end
 end
 # ....
-require_relative "parent.rb"
+# require_relative "parent.rb"
 
 class Child < Parent
   def initialize(name, parent = nil)
@@ -78,7 +78,7 @@ module Hello
   end
 end
 #.....
-require_relative "hello.rb"
+# require_relative "hello.rb"
 class Person
   include Hello
   def initialize(name)
@@ -86,8 +86,8 @@ class Person
   end
 end
 #.....
-tom = Person.new("Tom")
-tom.hello # => "Hello there, Tom!"
+# tom = Person.new("Tom")
+# tom.hello # => "Hello there, Tom!"
 
 
 
@@ -158,3 +158,17 @@ up on a machine as it's inpute size approaches infinite."
 #     Describe the difference between RSpec's describe and context and when you should use each
 
 #     Given an assertion, correctly set up an it block that uses expect to test for the assertion
+
+
+
+
+
+# BFS
+
+class Node
+
+  def dfs(&prc)
+    return self if prc.call == self
+  end
+
+end
