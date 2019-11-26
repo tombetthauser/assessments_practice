@@ -66,12 +66,40 @@ syntax."
 
 #     Explain the difference between inheriting from a class and including a module
 
+"Inheriting from a class grants the child access to all the methods included in the
+parent class including initialize with the ability for specific instances of 
+this class to be created. Modules are similar in structure to classes but specific 
+instances of them cannot be created, rather they are included in classes so that
+their methods can be included."
+
+module Hello
+  def hello
+    p "Hello there, #{@name}!"
+  end
+end
+#.....
+require_relative "hello.rb"
+class Person
+  include Hello
+  def initialize(name)
+    @name = name
+  end
+end
+#.....
+tom = Person.new("Tom")
+tom.hello # => "Hello there, Tom!"
+
 
 
 
 # Big O Analysis
 
 #     Explain what "Big O" is and why we utilize it
+
+"Big O is a way for us to distinguish between more and less optimized versions
+of an algorithm or function. It describes the behavior of a particular function
+in terms of the amount of time it takes to run or the amount of space it takes
+up on a machine as it's inpute size approaches infinite."
 
 #     Given an implementation of an algorithm, determine its Big O time complexity
 
