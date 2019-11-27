@@ -218,7 +218,7 @@ up on a machine as it's inpute size approaches infinite."
 
 
 
-# BFS
+# DFS
 
 class Node
 
@@ -234,6 +234,26 @@ class Node
     nil
   end
 
+end
+
+# BFS 
+
+class Node
+
+  def bfs(&prc)
+    raise "must have proc" if proc.nil?
+
+    queue = [self]
+
+    until queue.empty?
+      return self if prc.call(queue.shift)
+      if self.children.length > 0
+        self.children.each { |child| queue << child }
+      end
+    end
+
+    nil
+  end
 
 end
 
@@ -267,15 +287,12 @@ end
 # two_sum
 
 def okay_two_sum?(arr, target)
-
-  hash = {}
-
-  arr.each_with_index do |ele, idx|
+  hash = Hash.new
+  arr.each do |ele|
     compliment = target - ele
-    return true if hash[compliment] #&& hash[compliment] != idx
-    hash[ele] = true #idx
+    return true if hash[compliment]
+    hash[ele] = true
   end
-
   false
 end
 
@@ -283,9 +300,9 @@ end
 
 
 
-# arr = [7,10,5,5,1]
-# p okay_two_sum?(arr, 10) # => should be true
-# p okay_two_sum?(arr, 1000) # => false
+arr = [7,10,5,5,1]
+p okay_two_sum?(arr, 10) # => should be true
+p okay_two_sum?(arr, 1000) # => false
 
 
 
