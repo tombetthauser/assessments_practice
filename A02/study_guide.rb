@@ -29,39 +29,38 @@
 
 #     Implement a class inheritance chain using proper Ruby syntax
 
-class Parent
-  def initialize(name)
-    @name = name
-    @children = []
-  end
-  protected
-  def add_child(child)
-    @children << child
-  end
-end
+# class Parent
+#   def initialize(name)
+#     @name = name
+#     @children = []
+#   end
+#   protected
+#   def add_child(child)
+#     @children << child
+#   end
+# end
 # ....
 # require_relative "parent.rb"
 
-class Child < Parent
-  def initialize(name, parent = nil)
-    super(name)
-    @parent = parent
-  end
-  def add_parent(parent)
-    @parent = parent
-    parent.add_child(self)
-  end
-end
+# class Child < Parent
+#   def initialize(name, parent = nil)
+#     super(name)
+#     @parent = parent
+#   end
+#   def add_parent(parent)
+#     @parent = parent
+#     parent.add_child(self)
+#   end
+# end
 
 #     Explain the difference between public, private, and protected methods
 
 "Public methods are accessible both inside and outside an instance of a given 
   class. Private methods are only accessible within an instance of a givin class.
-  Protected methods are accessible both within an instance of a given class, but
+  Protected methods are accessible within an instance of a given class, but
   are also accessible to other instances of the same class."
 
-
-
+  #~3min
 
 
 "Public methods can be called anywhere inside or outside a class.
@@ -74,6 +73,53 @@ class where they can be called with or without the explicit use of self#method
 syntax."
 
 #     Explain the difference between inheriting from a class and including a module
+
+"When we define a class that inherits from another class the child class automatically
+inherits all the methods form it's parent class. If we define an external module
+we can import the methods from that module into any number of disticnt classes with
+the syntax -include- followed by the name of the module. In both the cases of
+inheritance and module includion we must use require_relative at the head of our
+file before using syntax to include or inherit.
+
+ie:"
+
+class Parent
+  def initialize(name)
+    @name = name
+  end
+
+  def say_name
+    p "Hi my name is #{name}!"
+  end
+end
+
+module MyModule
+  def add_parent(parent)
+    @parent = parent
+  end
+end
+
+# require_relative "parent.rb"
+# require_relative "mymodule.rb"
+
+class Child < Parent
+  include MyModule
+
+  def initialize(name)
+    super(name)
+    @parent = nil
+  end
+end
+
+dan = Child.new("Dan")
+tom = Parent.new("Tom")
+dan.add_parent(tom)
+
+# p dan
+
+# ~8min
+
+
 
 "Inheriting from a class grants the child access to all the methods included in the
 parent class including initialize with the ability for specific instances of 
@@ -222,25 +268,24 @@ end
 
 def okay_two_sum?(arr, target)
 
-  ele_hash = {}
+  hash = {}
 
-  arr.each do |ele|
+  arr.each_with_index do |ele, idx|
     compliment = target - ele
-    return true if ele_hash[compliment]
-    ele_hash[ele] = true
+    return true if hash[compliment] #&& hash[compliment] != idx
+    hash[ele] = true #idx
   end
 
   false
-
 end
 
-# ~6min, ~3min, 1.5min
+# ~6min, ~3min, 1.5min, ~2min
 
 
 
-arr = [7,10,10,1,1,1,5,1,0]
-p okay_two_sum?(arr, 17) # => should be true
-p okay_two_sum?(arr, 1000) # => false
+# arr = [7,10,5,5,1]
+# p okay_two_sum?(arr, 10) # => should be true
+# p okay_two_sum?(arr, 1000) # => false
 
 
 
